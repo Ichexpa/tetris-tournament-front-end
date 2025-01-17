@@ -24,7 +24,7 @@ export function LoginForm({
           <div className="flex items-center">
             <Label htmlFor="password">Contraseña</Label>
           </div>
-          <Input id="password" type="password" placeholder="contraseña" required />
+          <Input id="password" type="password" placeholder="Contraseña" required />
         </div>
         <Button type="submit" className="w-full">
           Ingresar

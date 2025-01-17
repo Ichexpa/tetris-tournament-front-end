@@ -32,6 +32,12 @@ export function UserRegister({
           </div>
           <Input id="password" type="password" placeholder="Contraseña" required />
         </div>
+        <div className="grid gap-2">
+          <div className="flex items-center">
+            <Label htmlFor="passwordConfirm">Confirmar contraseña</Label>
+          </div>
+          <Input id="passwordConfirm" type="password" placeholder="Confirma la contraseña" required />
+        </div>
         <Button type="submit" className="w-full">
           Registrarse
         </Button>
