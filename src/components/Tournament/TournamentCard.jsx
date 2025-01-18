@@ -38,7 +38,7 @@ function TournamentCard({ className, ...props }) {
         <div className="flex items-center p-2">
             <Trophy className="text-lg mr-3"/>
             <CardTitle className="text-lg">Puzzle Pro</CardTitle>
-            <span className="text-lime-600 ml-auto">1500 puntos</span>            
+            <span className="text-lime-600 ml-auto font-bold">1500 puntos</span>            
         </div>
       </CardHeader>
       <CardContent className="grid gap-2">

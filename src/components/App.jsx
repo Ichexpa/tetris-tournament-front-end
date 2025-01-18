@@ -11,7 +11,11 @@ function App() {
         </div>
       </Layout>}
   return (
-      <LoginPage/> 
+      <Layout>
+        <div className='p-4'>
+          <TournamentCard/>
+        </div>
+      </Layout>   
   )
 }
 
