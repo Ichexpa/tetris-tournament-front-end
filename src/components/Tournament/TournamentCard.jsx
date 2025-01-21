@@ -13,19 +13,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { format } from "date-fns"
 
-
-function TournamentCard({ className, ...props }) {
+function TournamentCard({id,name,capacity,start_date,end_date,status,total_points,organizer_id }) {
+  
   return (
-    <Card className={cn("w-[380px]", className)} {...props}>
+    <Card className={cn("w-[380px]")}>
       <CardHeader>
         <div className="flex items-center p-2">
             <Trophy className="text-lg mr-3"/>
-            <CardTitle className="text-lg">Puzzle Pro</CardTitle>
-            <span className="text-lime-600 ml-auto font-bold">1500 puntos</span>            
+            <CardTitle className="text-lg truncate">{name}</CardTitle>
+            <span className="text-lime-600 ml-auto font-bold truncate">{total_points} puntos</span>            
         </div>
       </CardHeader>
-      <CardContent className="grid gap-2">
+      <CardContent className="grid gap-1">
         <div className=" flex items-center space-x-1 rounded-md border p-4">
           <User />
           <div className="flex-1 space-y-1">
@@ -34,7 +35,7 @@ function TournamentCard({ className, ...props }) {
             </p>
             <p className="text-sm text-muted-foreground">
                <span className="text-lime-600 font-bold">15</span>/
-               <span className="text-orange-700 font-bold">16</span> inscriptos
+               <span className="text-orange-700 font-bold">{capacity}</span> inscriptos
             </p>
           </div>         
         </div>
@@ -45,7 +46,7 @@ function TournamentCard({ className, ...props }) {
               Fecha
             </p>
             <p className="text-sm text-muted-foreground">
-              25-01-24 al 11-02-24
+              {format(new Date(start_date),"dd/MM/yyyy")} al {format(new Date(end_date),"dd/MM/yyyy")} 
             </p>
           </div>
         </div>
@@ -57,7 +58,7 @@ function TournamentCard({ className, ...props }) {
                 <User /> Ver Participantes
                 </Button>
             </DialogTrigger>
-        <ModalInfoTorneo nombreTorneo={"Puzzle"} cantidadParticipantes={15}/>
+        <ModalInfoTorneo nombreTorneo={name} cantidadParticipantes={15}/>
         </Dialog>
         <Button className="bg-lime-600 hover:bg-lime-500 hover:outline-none">
           <Check /> Inscribirse

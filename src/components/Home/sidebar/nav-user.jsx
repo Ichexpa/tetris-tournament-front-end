@@ -28,11 +28,12 @@ import useFetch from "../../../hooks/useFetch"
 import { useEffect } from "react"
 import { useAuth } from "../../../contexts/AuthContext"
 export function NavUser() {
+
   const { isMobile } = useSidebar()
   const loginOptions = useAuth("actions")
   const token = localStorage.getItem("authToken")
   const role = localStorage.getItem("role")
-  const [{data,isLoading,isError},doFetch]  = useFetch('http://127.0.0.1:5000/api/auth/validate')
+  const [{data,isLoading,isError},doFetch]  = useFetch(`${import.meta.env.VITE_API_URL}/auth/validate`)
   useEffect(()=>{
     doFetch({
       method: "GET",
@@ -61,11 +62,11 @@ export function NavUser() {
               {data &&
               <>
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src="/avatars/shadcn.jpg"alt={`${data.name} ${data.lastname}`} />
+                  <AvatarImage src="/avatars/shadcn.jpg"alt={`${data.name}`} />
                   <AvatarFallback className="rounded-lg">{data.name[0]}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{`${data.name} ${data.lastname}`}</span>
+                  <span className="truncate font-semibold">{`${data.name}`}</span>
                   <span className="truncate text-xs">{data.email}</span>
                 </div>
               </>}
@@ -82,11 +83,11 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src="/avatars/shadcn.jpg" alt={`${data.name} ${data.lastname}`} />
+                  <AvatarImage src="/avatars/shadcn.jpg" alt={`${data.name}`} />
                   <AvatarFallback className="rounded-lg">{data.name[0]}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{`${data.name} ${data.lastname}`} </span>
+                  <span className="truncate font-semibold">{`${data.name}`} </span>
                   <span className="truncate text-xs">{data.email}</span>
                 </div>
               </div>
