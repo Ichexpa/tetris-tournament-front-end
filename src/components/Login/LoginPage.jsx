@@ -1,12 +1,5 @@
 import TabsLoginRegister from  "./TabsLoginRegister"
-import { GalleryVerticalEnd } from "lucide-react"
 import tetrisBackground from "../../assets/tetrisBackground.jpg"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
 
 const LoginPage = ()=>{
      return (
