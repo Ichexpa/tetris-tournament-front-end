@@ -10,7 +10,7 @@ export function LoginForm({ className,...props}) {
   const username = useRef()
   const password = useRef()  
   const loginCredentials = useAuth("actions") 
-  const [{data: dataLogin ,isLoading: isLoadingLogin, isError : isErrorLogin},doFetchLogin] = useFetch(`http://127.0.0.1:5000/api/auth/login`)
+  const [{data: dataLogin ,isLoading: isLoadingLogin, isError : isErrorLogin},doFetchLogin] = useFetch(`${import.meta.env.VITE_API_URL}/auth/login`)
   const redirect = useNavigate()
   const login = (e) =>{
     e.preventDefault();

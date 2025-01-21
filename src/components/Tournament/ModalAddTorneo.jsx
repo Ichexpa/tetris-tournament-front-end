@@ -1,11 +1,8 @@
 import {
-  Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import {
   Popover,
@@ -26,12 +23,12 @@ import { Label } from "@/components/ui/label"
 import { Button } from "../ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
-import { useState,useRef } from "react"
+import { useState,useRef, useEffect } from "react"
 import { addDays, format } from "date-fns"
 import { cn } from "@/lib/utils"
-
+import useFetch from "../../hooks/useFetch"
 const ModalAddTorneo =()=>{
-    
+    const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/create`)
     const name = useRef()
     const [capacityPlayer,setCapacity] = useState()
     const totalPoints = useRef()
@@ -45,10 +42,23 @@ const ModalAddTorneo =()=>{
             capacity : capacityPlayer,
             total_points : totalPoints.current.value,
             start_date : format(date.from,"yyyy-MM-dd"),
-            end_date  : format(date.to,"yyyy-MM-dd")
+            end_date  : format(date.to,"yyyy-MM-dd"),
+            organizer_id : localStorage.getItem("id_user")
         }
+        console.log(newTournamentData)
+        doFetch({
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json"
+            },
+            body : JSON.stringify(newTournamentData)
+        })
     }
-
+    useEffect(()=>{
+        if(data){
+            console.log(data)
+        }
+    },[data])
     return(
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>

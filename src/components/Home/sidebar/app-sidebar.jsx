@@ -11,41 +11,40 @@ import {
   SidebarMenuItem,
   SidebarFooter,
 } from "@/components/ui/sidebar"
+import { Link } from "react-router-dom"
 
 // Menu items.
 const items = [
   {
     title: "Inicio",
-    url: "#",
+    url: "/",
     icon: Home,
   },
-  {
+  /* {
     title: "Search",
     url: "#",
     icon: Search,
-  },
+  }, */
 ]
 const itemsTournament = [
   {
     title: "Torneos disponibles",
-    url: "#",
+    url: "/",
     icon: Trophy,
   },
   {
     title: "Ranking de jugadores",
-    url: "#",
+    url: "/ranking",
     icon: User,
   },
   {
-    title: "Torneos finalizados",
-    url: "#",
+    title: "Resultados de torneos",
+    url: "/results",
     icon: Medal,
   }
 ]
 
 export function AppSidebar() {
-    
-  //let user = {name:"Mauricio",email:"mauro@gmail.com",avatar:"ejemplo@gmail.com"}
   return (
         <Sidebar>
             <SidebarContent>
@@ -56,10 +55,10 @@ export function AppSidebar() {
                     {items.map((item) => (
                         <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild>
-                            <a href={item.url}>
+                            <Link to={item.url}>
                             <item.icon />
                             <span>{item.title}</span>
-                            </a>
+                            </Link>
                         </SidebarMenuButton>
                         </SidebarMenuItem>
                     ))}
@@ -72,10 +71,10 @@ export function AppSidebar() {
                     {itemsTournament.map((item) => (
                         <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild>
-                            <a href={"das"}>
+                            <Link to={item.url}>
                             <item.icon />
                             <span>{item.title}</span>
-                            </a>
+                            </Link>
                         </SidebarMenuButton>
                         </SidebarMenuItem>
                     ))}
