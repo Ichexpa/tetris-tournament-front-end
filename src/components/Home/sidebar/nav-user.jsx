@@ -1,10 +1,6 @@
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
   User,
 } from "lucide-react"
 import {
@@ -27,13 +23,32 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { Link } from "react-router-dom"
+import useFetch from "../../../hooks/useFetch"
+import { useEffect } from "react"
+import { useAuth } from "../../../contexts/AuthContext"
 export function NavUser() {
   const { isMobile } = useSidebar()
-  let user = {
-    name: "Mauricio",
-    email: "mauricio@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  }
+  const loginOptions = useAuth("actions")
+  const token = localStorage.getItem("authToken")
+  const role = localStorage.getItem("role")
+  const [{data,isLoading,isError},doFetch]  = useFetch('http://127.0.0.1:5000/api/auth/validate')
+  useEffect(()=>{
+    doFetch({
+      method: "GET",
+      headers: {
+                Authorization: `Bearer ${token}`,
+      },
+    })
+  },[])
+  useEffect(()=>{
+    if(data){
+      if(data.id){
+        loginOptions.login(token,role,data.id)
+        console.log("ID del organizador"  + data.id)
+      }
+    }
+  },[data])
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -43,14 +58,17 @@ export function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
-              </div>
+              {data &&
+              <>
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage src="/avatars/shadcn.jpg"alt={`${data.name} ${data.lastname}`} />
+                  <AvatarFallback className="rounded-lg">{data.name[0]}</AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">{`${data.name} ${data.lastname}`}</span>
+                  <span className="truncate text-xs">{data.email}</span>
+                </div>
+              </>}
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -60,28 +78,31 @@ export function NavUser() {
             align="end"
             sideOffset={4}
           >
+            { data &&
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarImage src="/avatars/shadcn.jpg" alt={`${data.name} ${data.lastname}`} />
+                  <AvatarFallback className="rounded-lg">{data.name[0]}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">{`${data.name} ${data.lastname}`} </span>
+                  <span className="truncate text-xs">{data.email}</span>
                 </div>
               </div>
-            </DropdownMenuLabel>
+            </DropdownMenuLabel>}
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>              
-              <DropdownMenuItem>
-                <User />
-                Mi cuenta
+            <DropdownMenuGroup>
+              <Link to={"/profile"}>              
+              <DropdownMenuItem className = "cursor-pointer">                
+                  <User />
+                  Mi cuenta                
               </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>loginOptions.logout()} className = "cursor-pointer">
               <LogOut />
-              Cerrar Sesion
+              Cerrar Sesión
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

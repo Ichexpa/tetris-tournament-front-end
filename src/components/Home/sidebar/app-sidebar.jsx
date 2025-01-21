@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Medal, Search, Settings, Trophy, User } from "lucide-react"
+import { Home, Medal, Search,Trophy, User } from "lucide-react"
 import { NavUser } from "./nav-user"
 import {
   Sidebar,
@@ -10,7 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarFooter,
-  SidebarRail
 } from "@/components/ui/sidebar"
 
 // Menu items.
@@ -71,7 +70,7 @@ export function AppSidebar() {
                 <SidebarGroupLabel>Tetris</SidebarGroupLabel>
                     <SidebarMenu>
                     {itemsTournament.map((item) => (
-                        <SidebarMenuItem key={"hola"}>
+                        <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild>
                             <a href={"das"}>
                             <item.icon />
