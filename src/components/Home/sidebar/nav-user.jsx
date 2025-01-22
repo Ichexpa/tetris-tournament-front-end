@@ -46,7 +46,6 @@ export function NavUser() {
     if(data){
       if(data.id){
         loginOptions.login(token,role,data.id)
-        console.log("ID del organizador"  + data.id)
       }
     }
   },[data])
