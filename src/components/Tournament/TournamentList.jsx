@@ -6,18 +6,25 @@ import {
   Dialog,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Switch } from "@/components/ui/switch"
 import useFetch from "../../hooks/useFetch"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const TournamentList = ()=>{
+    const [inscribed,setInscribed] = useState(false)
     const role = localStorage.getItem("role")
-    const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/`)
+    const user_id = localStorage.getItem("id_user")
+    const [{data,isLoading,isError},doFetch] = useFetch(role === "organizer"?
+                                `${import.meta.env.VITE_API_URL}/tournament/`:
+                            `${import.meta.env.VITE_API_URL}/tournament?user_id=${user_id}&inscribed=${inscribed}`)
     useEffect(()=>{
         doFetch({
             method:"GET"
         })
-    },[])
-
+    },[inscribed])
+   /*  useEffect(()=>{
+        console.log(inscribed)
+    },[inscribed]) */
     return(
         <>            
             <div className="flex justify-end mb-4">
@@ -29,7 +36,13 @@ const TournamentList = ()=>{
                 <ModalAddTorneo/>
             </Dialog>
             }
+            </div>
+            {role == "player" &&
+            <div className="mb-4 flex content-center font-semibold">
+                Mis inscripciones
+                <Switch className="ml-2" checked={inscribed} onCheckedChange={()=>setInscribed(!inscribed)}></Switch>
             </div>   
+            }
             <div className="flex flex-wrap justify-evenly gap-y-4 ">
                 {data &&
                     data.map((torneo)=>(
@@ -39,9 +52,11 @@ const TournamentList = ()=>{
                         organizer_id={torneo.organizer_id}
                         total_points={torneo.total_points}
                         status={torneo.status}
-                        id = {torneo.id}
+                        id_tournament = {torneo.id}
                         start_date={torneo.start_date}
                         end_date={torneo.end_date}
+                        best_of={torneo.best_of}
+                        inscribed = {inscribed}
                         />
                     )
                     )
