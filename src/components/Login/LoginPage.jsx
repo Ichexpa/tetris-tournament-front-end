@@ -1,5 +1,6 @@
 import TabsLoginRegister from  "./TabsLoginRegister"
 import tetrisBackground from "../../assets/tetrisBackground.jpg"
+import { Toaster } from "@/components/ui/toaster"
 
 const LoginPage = ()=>{
      return (
@@ -10,6 +11,7 @@ const LoginPage = ()=>{
                 <div className="flex flex-1 items-center justify-center">
                     <div className="w-full max-w-xs">
                         <TabsLoginRegister />
+                        <Toaster />
                     </div>
                 </div>
             </div>
