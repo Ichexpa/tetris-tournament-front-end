@@ -144,3 +144,21 @@ h1 {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes gradient-bg {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-animated {
+  background: linear-gradient(270deg, #ff6b6b, #f7e600, #00d4ff, #9b5de5);
+  background-size: 400% 400%;
+  animation: gradient-bg 10s ease infinite;
+}
