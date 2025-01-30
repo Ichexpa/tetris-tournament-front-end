@@ -21,7 +21,7 @@ import ModalConfirmStartTournament from "./ModalConfirmStartTournament"
 import { useToast } from "../../hooks/use-toast"
 import { Link } from "react-router-dom"
 
-function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end_date,status,total_points,organizer_id,best_of,inscribed }) {
+function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end_date,status,total_points,organizer_id,best_of }) {
   const [confirm,setConfirm] = useState(false)
   const [disableButton,setDisableButton]  = useState(false)
   const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/start_tournament`)
@@ -64,7 +64,6 @@ function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end
       },1)
     }    
   },[isError,toast])
-
   return (
     <Card className={cn("w-[380px]")}>
       <CardHeader>
@@ -84,15 +83,15 @@ function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end
         </div>
       </CardHeader>
       <CardContent className="grid gap-1">
-        <div className=" flex items-center space-x-1 rounded-md border p-4">
-          <User />
+        <div className="bg-zinc-200 flex text-black items-center space-x-1 rounded-md border p-4">
+          <User className="text-black" />
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium leading-none">
-              Participantes
+              Capacidad máxima de participantes
             </p>
             <p className="text-sm text-muted-foreground">
-               <span className="text-lime-600 font-bold">15</span>/
-               <span className="text-orange-700 font-bold">{capacity}</span> inscriptos
+               {/* <span className="text-lime-600 font-bold">15</span>/ */}
+               <span className="text-orange-500 font-bold">{capacity}</span>
             </p>
           </div>         
         </div>
@@ -115,12 +114,12 @@ function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end
                 <User /> Ver Participantes
                 </Button>
             </DialogTrigger>
-        <ModalInfoTorneo nombreTorneo={name} cantidadParticipantes={15}/>
+        <ModalInfoTorneo nombreTorneo={name} capacidad={capacity} tournament_id={id_tournament} />
         </Dialog>      
         <Dialog> 
           <DialogTrigger asChild>
             {status == "Activo" && disableButton == false ?
-            <Button className="bg-gray-950 hover:bg-dark-500 hover:outline-none">
+            <Button className="bg-orange-700 hover:bg-orange-500 hover:outline-none">
               <Command /> Iniciar Torneo
               <ModalConfirmStartTournament capacity={capacity} nombre_torneo={name} 
               fecha_inicio={format(new Date(start_date),"dd/MM/yyyy")}

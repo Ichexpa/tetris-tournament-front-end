@@ -21,56 +21,52 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import useFetch from "../../hooks/useFetch"
+import { useEffect } from "react"
 
-
-const ModalInfoTorneo = ({nombreTorneo,cantidadParticipantes}) =>{
-    const players = [
-    { username: "SpeedyTetris", puntuation: 1500, ranking: 1 },
-    { username: "BlockMaster", puntuation: 1450, ranking: 2 },
-    { username: "FallingWizard", puntuation: 1400, ranking: 3 },
-    { username: "TetraKing", puntuation: 1350, ranking: 4 },
-    { username: "Stackinator", puntuation: 1300, ranking: 5 },
-    { username: "PixelDrop", puntuation: 1250, ranking: 6 },
-    { username: "SwiftStacker", puntuation: 1200, ranking: 7 },
-    { username: "CubeCrafter", puntuation: 1150, ranking: 8 },
-    { username: "GridGuru", puntuation: 1100, ranking: 9 },
-    { username: "ShapeShifter", puntuation: 1050, ranking: 10 },
-    { username: "LineClearer", puntuation: 1000, ranking: 11 },
-    { username: "BlockStorm", puntuation: 950, ranking: 12 },
-    { username: "TetroTitan", puntuation: 900, ranking: 13 },
-    { username: "StackLord", puntuation: 850, ranking: 14 },
-    { username: "PuzzleMaster", puntuation: 800, ranking: 15 },
-    ];
-
+const ModalInfoTorneo = ({nombreTorneo,capacidad,tournament_id}) =>{
+    const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/player_inscribed/${tournament_id}`)
+    useEffect(()=>{
+      doFetch({
+            method:"GET"
+        })
+    },[])
     return(
    <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Torneo {nombreTorneo} Pro</DialogTitle>{/* 
+          <DialogTitle className="text-center" >Torneo {nombreTorneo}</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here.{nombreTorneo} Click save when you're done.
-          </DialogDescription> */}
+            <div>
+              Inscriptos: {data && data.length}
+            </div>
+            <div>
+              Capacidad del torneo : {capacidad}
+            </div>
+          </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-72 w-100 rounded-md border">
             <Table>
-                <TableCaption>Jugadores inscriptos al torneo.</TableCaption>
-                <TableHeader>
-                    <TableRow>
-                    <TableHead className="w-[100px]">Jugador</TableHead>
-                    <TableHead>Puntuacion</TableHead>
-                    <TableHead>Ranking</TableHead>
-                    <TableHead className="text-right">Ver perfil</TableHead>
+                <TableCaption>{data && data.length === 0 ? "No hay jugadores registrados" : "Jugadores inscriptos al torneo."}</TableCaption>
+                <TableHeader className="bg-teal-800">
+                    <TableRow >
+                      <TableHead className="text-white">Jugador</TableHead>
+                      <TableHead className="text-white">Puntuacion</TableHead>
+                      <TableHead className="text-white text-center ">Email</TableHead>
+                      <TableHead className="text-white">Ver perfil</TableHead>
                     </TableRow>
-                </TableHeader>            
-                    <TableBody>
-                        {players.map((players)=>(
-                            <TableRow key={players.username}>
-                                <TableCell className="font-medium">{players.username}</TableCell>
-                                <TableCell className="text-emerald-500">{players.puntuation}</TableCell>
-                                <TableCell>{players.ranking}</TableCell>
+                </TableHeader> 
+                {data &&           
+                    <TableBody>                      
+                        {data.map((players)=>(
+                            <TableRow key={players.id}>
+                                <TableCell className="font-medium">{players.first_name} {players.last_name}</TableCell>
+                                <TableCell className="text-emerald-500">{players.score}</TableCell>
+                                <TableCell className="text-bold">{players.email}</TableCell>
                                 <TableCell className="text-right cursor-pointer"><User/></TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>            
+                        ))}                        
+                    </TableBody> 
+                }           
             </Table>
         </ScrollArea>
         <DialogFooter>
