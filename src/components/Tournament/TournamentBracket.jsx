@@ -63,7 +63,7 @@ const TournamentBracket = () =>{
       <Dialog open={open} onOpenChange={setOpen}> 
           <DialogTrigger asChild>            
           </DialogTrigger>
-          <ModalSetPuntage dataMatch={dataMatch} setDataTournament= {setDataMatchesModify} dataTournament={dataMatchesModify} />
+          <ModalSetPuntage dataMatch={dataMatch} tournament_id = {id_tournament} setDataTournament= {setDataMatchesModify} dataTournament={dataMatchesModify} />
       </Dialog>
     </>
         
