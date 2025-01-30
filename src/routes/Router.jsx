@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element : <TournamentBracket/>
       },
       {
-        path : "/profile",
+        path : "/profile/:id_player",
         element : <Profile/>
       },
       {

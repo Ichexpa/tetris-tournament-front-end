@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import useFetch from "../../hooks/useFetch"
 import { useEffect } from "react"
+import { Link } from "react-router-dom"
 
 const ModalInfoTorneo = ({nombreTorneo,capacidad,tournament_id}) =>{
     const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/player_inscribed/${tournament_id}`)
@@ -62,7 +63,11 @@ const ModalInfoTorneo = ({nombreTorneo,capacidad,tournament_id}) =>{
                                 <TableCell className="font-medium">{players.first_name} {players.last_name}</TableCell>
                                 <TableCell className="text-emerald-500">{players.score}</TableCell>
                                 <TableCell className="text-bold">{players.email}</TableCell>
-                                <TableCell className="text-right cursor-pointer"><User/></TableCell>
+                                <TableCell className="text-right cursor-pointer">
+                                  <Link to={`/profile/${players.id}`}>
+                                    <User/>
+                                  </Link>
+                                </TableCell>
                             </TableRow>
                         ))}                        
                     </TableBody> 
