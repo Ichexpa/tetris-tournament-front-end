@@ -56,7 +56,6 @@ const TournamentList = ()=>{
                             start_date={torneo.start_date}
                             end_date={torneo.end_date}
                             best_of={torneo.best_of}
-                            inscribed={inscribed}
                             />
                         ) : role === "player" ? (
                             <TournamentCardPlayerView 
