@@ -5,6 +5,7 @@ import TournamentList from "../components/Tournament/TournamentList";
 import Profile from "../components/Profile/Profile"
 import Ranking from "../components/Users/Ranking";
 import TournamentResults from "../components/Users/TournamentResults";
+import TournamentBracket from "../components/Tournament/TournamentBracket";
 import ProtectedRoute from "./AuthRoutes";
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {       
         index: true,  // Ruta principal
         element: <TournamentList />  // Componente para el index
+      },
+      {
+        path :  "/tournament/bracket/:id_tournament",
+        element : <TournamentBracket/>
       },
       {
         path : "/profile",

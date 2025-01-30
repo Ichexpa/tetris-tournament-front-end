@@ -27,8 +27,11 @@ import { useState,useRef, useEffect } from "react"
 import { addDays, format } from "date-fns"
 import { cn } from "@/lib/utils"
 import useFetch from "../../hooks/useFetch"
+import { useToast } from "../../hooks/use-toast"
+
 const ModalAddTorneo =()=>{
     const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/create`)
+    const {confirmToast} = useToast()
     const name = useRef()
     const [capacityPlayer,setCapacity] = useState()
     const totalPoints = useRef()
