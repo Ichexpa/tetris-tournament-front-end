@@ -11,7 +11,7 @@ import {
 
 const ModalConfirmSign = ({nombre_torneo,fecha_inicio,fecha_fin,setConfirm}) =>{
     return(
-         <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{nombre_torneo}</DialogTitle>
           <DialogDescription>

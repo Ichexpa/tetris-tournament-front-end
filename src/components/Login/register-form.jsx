@@ -63,7 +63,7 @@ export function UserRegister({className,...props}) {
     if(validateFields()){
       const userData = new FormData()
       userData.append('first_name',username.current.value)
-      userData.append('last_name',username.current.value)
+      userData.append('last_name',lastname.current.value)
       userData.append('email',email.current.value)
       userData.append('password',password.current_value)
 
@@ -75,6 +75,7 @@ export function UserRegister({className,...props}) {
   }
   useEffect(()=>{
     if(data){
+      console.log("se registro con exito")
       setTimeout(() => {
         toast({
         title: "Registro éxitoso",
