@@ -1,4 +1,4 @@
-import {CalendarDays,Command, Check,Pen,ReceiptText,Trophy, User, UserCheck, Clock } from "lucide-react"
+import {CalendarDays,Command, Check,Pen,ReceiptText,Trophy, User, UserCheck, Clock, Eye } from "lucide-react"
 import ModalInfoTorneo from "./ModalInfoTorneo"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -19,12 +19,13 @@ import useFetch from "../../hooks/useFetch"
 import { useEffect, useState } from "react"
 import ModalConfirmStartTournament from "./ModalConfirmStartTournament"
 import { useToast } from "../../hooks/use-toast"
+import { Link } from "react-router-dom"
 
 function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end_date,status,total_points,organizer_id,best_of,inscribed }) {
   const [confirm,setConfirm] = useState(false)
   const [disableButton,setDisableButton]  = useState(false)
   const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/start_tournament`)
-
+  
   const {toast} = useToast()
 
   useEffect(()=>{
@@ -52,6 +53,18 @@ function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end
     }
     
   },[data,toast])
+  useEffect(()=>{
+    if(isError){
+      setTimeout(() => {
+        toast({
+        variant: "destructive",
+        title: "No se puede iniciar el torneo",
+        description: `No hay suficientes jugadores`,
+        })
+      },1)
+    }    
+  },[isError,toast])
+
   return (
     <Card className={cn("w-[380px]")}>
       <CardHeader>
@@ -106,15 +119,21 @@ function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end
         </Dialog>      
         <Dialog> 
           <DialogTrigger asChild>
-            {status == "Activo"?
-            <Button className="bg-gray-950hover:bg-dark-500 hover:outline-none">
+            {status == "Activo" && disableButton == false ?
+            <Button className="bg-gray-950 hover:bg-dark-500 hover:outline-none">
               <Command /> Iniciar Torneo
               <ModalConfirmStartTournament capacity={capacity} nombre_torneo={name} 
-              fecha_inicio={start_date} fecha_fin={end_date} setConfirm={setConfirm} />
+              fecha_inicio={format(new Date(start_date),"dd/MM/yyyy")}
+              fecha_fin= {format(new Date(end_date),"dd/MM/yyyy")} 
+              setConfirm={setConfirm}
+              capacidad ={capacity}
+              best_of = {best_of} />
             </Button> :
-            <Button disabled={disableButton} oncl className="bg-gray-950hover:bg-dark-500 hover:outline-none">
-              <Clock /> En curso
-            </Button>
+            <Link to={`/tournament/bracket/${id_tournament}`}>
+              <Button onClick={()=>console.log(id_tournament)} className="bg-teal-500 hover:bg-teal-300 hover:outline-none">
+                <Eye /> Ver llaves
+              </Button>
+            </Link>
             }
           </DialogTrigger>
         </Dialog>

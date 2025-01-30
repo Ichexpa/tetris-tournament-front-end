@@ -19,7 +19,7 @@ const TournamentBracket = () =>{
   const [dataMatch,setDatamatch] = useState(null)
   const [dataMatchesModify,setDataMatchesModify]  = useState(null)
   const { id_tournament } = useParams();
-  const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/brackets/12`) 
+  const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/brackets/${id_tournament}`) 
    useEffect(()=>{
     doFetch({
         method : "GET"
@@ -36,7 +36,12 @@ const TournamentBracket = () =>{
    }
    return (
     <>
-    <div>Torneo</div>
+    <div className="flex-col bg-zinc-100 w-100 flex p-2 mb-4">
+      <div className="text-2xl text-slate-400"><span className="text-black text-bold">Torneo: </span> Ejemplo</div>
+      <div className="text-md text-slate-400"><span className="text-black text-bold">Mejor de:</span> 5</div>
+      <div className="text-md text-slate-400"><span className="text-black text-bold">Fecha de inicio:</span> 10/02</div>
+      <div className="text-md text-slate-400"><span className="text-black text-bold">Fecha de finalizacion:</span> 11/10</div>
+    </div>
     {isLoading &&
      <h1>Cargando...</h1>
     }
@@ -65,7 +70,7 @@ const TournamentBracket = () =>{
           </DialogTrigger>
           <ModalSetPuntage dataMatch={dataMatch} tournament_id = {id_tournament} setDataTournament= {setDataMatchesModify} dataTournament={dataMatchesModify} />
       </Dialog>
-    </>
+      </>
         
     }
     </>
