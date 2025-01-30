@@ -9,13 +9,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import useFetch from "../../hooks/useFetch"
 
-const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament }) => {
+const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament , tournament_id }) => {
   const limiteScore = 3;
   const [scoreP1, setScoreP1] = useState("");
   const [scoreP2, setScoreP2] = useState("");
-
+  const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/match/update_score`)
+  
   const handleScoreChange = (setter) => (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value) && (value === "" || parseInt(value) <= limiteScore)) {
@@ -23,6 +25,7 @@ const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament }) => {
     }
   };
   const changeResults = () => {
+    console.log(dataMatch.match)
     const indexMatch = dataTournament.findIndex(match => match.id === dataMatch.match.id);
     if (indexMatch ===-1) return;
     let updatedMatch ={ ...dataMatch.match };
@@ -44,9 +47,28 @@ const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament }) => {
     if(winner){
       linkNextMatch(winner);
     }
+    update_matchs_results()
     setScoreP1("")
     setScoreP2("")
   };
+  function update_matchs_results(){
+    const dataUpdateMatch = {
+      id: dataMatch.match.id,
+      score_p1 : parseInt(scoreP1),
+      score_p2 : parseInt(scoreP2),
+      player1_id : dataMatch.match.participants[0].id,
+      player2_id : dataMatch.match.participants[1].id,
+      tournament_id : parseInt(tournament_id), 
+      next_match_id : dataMatch.match.nextMatchId
+    }
+    doFetch({
+            method : "PATCH",
+            headers : {
+                "Content-Type": "application/json"
+            },
+            body : JSON.stringify(dataUpdateMatch)
+        })    
+  }
   const linkNextMatch=(winner)=>{
     setDataTournament(prevTournament=>{
       const updatedTournament=[...prevTournament];
@@ -60,6 +82,11 @@ const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament }) => {
       return updatedTournament;
     });
   };
+  useEffect(()=>{
+    if(data){
+      console.log("Actualizado con exito")
+    }
+  },[data])
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
@@ -92,7 +119,7 @@ const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament }) => {
       )}
 
       <DialogFooter>
-        <Button onClick={changeResults} className="bg-lime-600 text-white" variant="outline">
+        <Button onClick={changeResults} className="bg-lime-600 text-white" variant="secondary">
           Confirmar
         </Button>
       </DialogFooter>
