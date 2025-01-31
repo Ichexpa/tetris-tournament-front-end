@@ -1,4 +1,4 @@
-# Torneo de Tetris Front> 
+# Torneo de Tetris Front
 ## Sistema Gestor de Torneos de Tetris
 Pablo Ramírez, presidente de la Asociación de eSports del Centro Cultural Digital, se
 comunicó con el equipo de desarrollo para solicitar el diseño de un sistema que permita
@@ -28,7 +28,7 @@ grandes y un sistema de decaimiento para torneos antiguos. Esto asegura que el r
 refleje tanto el rendimiento histórico como la actividad reciente de los jugadores.
 Tanto organizadores como jugadores deben tener acceso a un panel personalizado donde
 pueden ver los torneos activos y sus próximos enfrentamientos. Los torneos deben poder
-ltrarse por estado (próximo, en curso, nalizado), nombre y fecha para facilitar su
+filtrarse por estado (próximo, en curso, nalizado), nombre y fecha para facilitar su
 búsqueda.
 
 ## Tecnologias Útilizadas:
@@ -65,7 +65,7 @@ npm run dev
  ```
 
 5. Abre tu navegador y accede a [localhost](#) para comenzar a utilizar la aplicación.
-## Autores
+## Autore
 
 - **Nombre del Autor**: [Hector Mauricio Mamaní](https://github.com/ichexpa)
 - **Email**: maurobvx@gmail.com
