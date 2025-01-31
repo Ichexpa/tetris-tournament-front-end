@@ -90,7 +90,6 @@ function TournamentCardOrganizerView({id_tournament,name,capacity,start_date,end
               Capacidad máxima de participantes
             </p>
             <p className="text-sm text-muted-foreground">
-               {/* <span className="text-lime-600 font-bold">15</span>/ */}
                <span className="text-orange-500 font-bold">{capacity}</span>
             </p>
           </div>         

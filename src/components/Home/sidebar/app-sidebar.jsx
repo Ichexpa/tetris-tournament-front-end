@@ -36,12 +36,12 @@ const itemsTournament = [
     title: "Ranking de jugadores",
     url: "/ranking",
     icon: User,
-  },
+  },/* 
   {
     title: "Resultados de torneos",
     url: "/results",
     icon: Medal,
-  }
+  } */
 ]
 
 export function AppSidebar() {
