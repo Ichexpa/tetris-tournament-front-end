@@ -65,7 +65,7 @@ npm run dev
  ```
 
 5. Abre tu navegador y accede a [localhost](#) para comenzar a utilizar la aplicación.
-## Autore
+## Autor
 
 - **Nombre del Autor**: [Hector Mauricio Mamaní](https://github.com/ichexpa)
 - **Email**: maurobvx@gmail.com
