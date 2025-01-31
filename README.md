@@ -28,7 +28,7 @@ grandes y un sistema de decaimiento para torneos antiguos. Esto asegura que el r
 refleje tanto el rendimiento histórico como la actividad reciente de los jugadores.
 Tanto organizadores como jugadores deben tener acceso a un panel personalizado donde
 pueden ver los torneos activos y sus próximos enfrentamientos. Los torneos deben poder
-ltrarse por estado (próximo, en curso, nalizado), nombre y fecha para facilitar su
+filtrarse por estado (próximo, en curso, nalizado), nombre y fecha para facilitar su
 búsqueda.
 
 ## Tecnologias Útilizadas:
