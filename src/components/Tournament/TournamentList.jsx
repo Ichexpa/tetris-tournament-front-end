@@ -15,6 +15,7 @@ const TournamentList = ()=>{
     const [inscribed,setInscribed] = useState(false)
     const role = localStorage.getItem("role")
     const user_id = localStorage.getItem("id_user")
+    console.log("user id", user_id)
     const [{data,isLoading,isError},doFetch] = useFetch(role === "organizer"?
                                 `${import.meta.env.VITE_API_URL}/tournament/`:
                             `${import.meta.env.VITE_API_URL}/tournament?user_id=${user_id}&inscribed=${inscribed}`)

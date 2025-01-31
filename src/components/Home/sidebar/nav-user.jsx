@@ -33,20 +33,22 @@ export function NavUser() {
   const loginOptions = useAuth("actions")
   const token = localStorage.getItem("authToken")
   const role = localStorage.getItem("role")
+  const user_id = localStorage.getItem("id_user")
   const [{data,isLoading,isError},doFetch]  = useFetch(`${import.meta.env.VITE_API_URL}/auth/validate`)
+  
   useEffect(()=>{
     doFetch({
       method: "GET",
       headers: {
                 Authorization: `Bearer ${token}`,
       },
-    })
+    }) 
   },[])
   useEffect(()=>{
     if(data){
       if(data.id){
         loginOptions.login(token,role,data.id)
-      }
+      }  
     }
   },[data])
   return (
@@ -92,13 +94,13 @@ export function NavUser() {
               </div>
             </DropdownMenuLabel>}
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <Link to={"/profile"}>              
-              <DropdownMenuItem className = "cursor-pointer">                
-                  <User />
-                  Mi cuenta                
-              </DropdownMenuItem>
-              </Link>
+            <DropdownMenuGroup>              
+                <Link to={`/profile/${user_id}`}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <User />
+                    Mi cuenta
+                  </DropdownMenuItem>
+                </Link>
             </DropdownMenuGroup>
             <DropdownMenuItem onClick={()=>loginOptions.logout()} className = "cursor-pointer">
               <LogOut />

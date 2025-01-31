@@ -12,12 +12,13 @@ import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import useFetch from "../../hooks/useFetch"
 
-const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament , tournament_id }) => {
-  const limiteScore = 3;
+const ModalSetPuntage = ({ dataMatch,best_of, dataTournament, setDataTournament , tournament_id }) => {
+
+  const limiteScore = best_of ==3 ? 2 : 3;
   const [scoreP1, setScoreP1] = useState("");
   const [scoreP2, setScoreP2] = useState("");
   const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/match/update_score`)
-  
+  const [checkWinner,setCheckWinner] = useState(false)
   const handleScoreChange = (setter) => (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value) && (value === "" || parseInt(value) <= limiteScore)) {
@@ -87,10 +88,23 @@ const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament , tourna
       console.log("Actualizado con exito")
     }
   },[data])
+  useEffect(()=>{
+    if(dataMatch){      
+      setScoreP1(dataMatch.match.participants[0].resultText)
+      setScoreP2(dataMatch.match.participants[1].resultText)
+      const result = dataMatch.match.participants.find((participante)=>participante.isWinner)
+      if(result){
+        setCheckWinner(true)
+      }
+      else{
+        setCheckWinner(false)
+      }
+    }
+  },[dataMatch])
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle className="text-md text-black-200">Match Ronda 1</DialogTitle>
+        <DialogTitle className="text-md text-black-200">{dataMatch && `Match Ronda ${dataMatch.match.tournamentRoundText}`}</DialogTitle>
         <DialogDescription className="text-sm text-gray-500">
           Ingresa el nuevo puntaje a continuación
         </DialogDescription>
@@ -119,9 +133,15 @@ const ModalSetPuntage = ({ dataMatch, dataTournament, setDataTournament , tourna
       )}
 
       <DialogFooter>
-        <Button onClick={changeResults} className="bg-lime-600 text-white" variant="secondary">
-          Confirmar
-        </Button>
+        {
+        checkWinner ? (
+          <h1 className="w-full text-green-800 text-center">Ya hay un ganador</h1>
+        ) : (
+          <Button onClick={changeResults} className="bg-lime-600 text-white" variant="secondary">
+            Confirmar
+          </Button>
+        )
+      }
       </DialogFooter>
     </DialogContent>
   );

@@ -31,9 +31,10 @@ import { useToast } from "../../hooks/use-toast"
 
 const ModalAddTorneo =()=>{
     const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/create`)
-    const {confirmToast} = useToast()
+    const {toast} = useToast()
     const name = useRef()
     const [capacityPlayer,setCapacity] = useState()
+    const [formatTournament,setFormatTournament] = useState()
     const totalPoints = useRef()
     const [date,setDate]  =  useState({
     from: new Date(),
@@ -46,7 +47,8 @@ const ModalAddTorneo =()=>{
             total_points : totalPoints.current.value,
             start_date : format(date.from,"yyyy-MM-dd"),
             end_date  : format(date.to,"yyyy-MM-dd"),
-            organizer_id : localStorage.getItem("id_user")
+            organizer_id : localStorage.getItem("id_user"),
+            best_of : formatTournament
         }
         console.log(newTournamentData)
         doFetch({
@@ -59,21 +61,43 @@ const ModalAddTorneo =()=>{
     }
     useEffect(()=>{
         if(data){
-            console.log(data)
-        }
+            setTimeout(() => {
+            toast({
+                title: "Torneo agregado con éxito",
+                description: `${name.current.value} agregado `,
+                })
+            },1)
+            }
     },[data])
     return(
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
                 <DialogTitle>Crear un nuevo Torneo</DialogTitle>
             </DialogHeader>
-            <div className="grid grid-cols-4 gap-4 py-4">
-                <div className="col-span-4 flex flex-col">
-                <Label id="name" className="flex-1 text-left text-xs text-slate-500">
-                   Nombre      
-                </Label>
-                <Input ref={name} id="name" name="name" placeholer="Nombre del torneo" className="col-span-4 mt-2"/>
-                </div>                
+                <div className="grid grid-cols-4 gap-4 py-4">
+                <div className="col-span-2 flex flex-col">
+                    <Label id="name" className="flex-1 text-left text-xs text-slate-500">
+                    Nombre      
+                    </Label>            
+                    <Input ref={name} id="name" name="name" placeholer="Nombre del torneo" className="col-span-2 mt-2"/>
+                </div>   
+                <div className="col-span-2 flex flex-col">    
+                    <Label id="capacity" className="flex-1 text-left text-xs text-slate-500">
+                    Formato      
+                    </Label>    
+                    <Select onValueChange={(value)=>setFormatTournament(value)}>
+                        <SelectTrigger className="mt-2">
+                            <SelectValue placeholder="Formato del toreno" />
+                        </SelectTrigger>
+                        <SelectContent >
+                            <SelectGroup>
+                            <SelectLabel>Formato</SelectLabel>
+                            <SelectItem value="3">Mejor de 3</SelectItem>
+                            <SelectItem value="5">Mejor de 5</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>             
                 <div className="col-span-2 flex flex-col">
                 <Label id="capacity" className="flex-1 text-left text-xs text-slate-500">
                    Capacidad      
