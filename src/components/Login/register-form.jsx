@@ -65,7 +65,7 @@ export function UserRegister({className,...props}) {
       userData.append('first_name',username.current.value)
       userData.append('last_name',lastname.current.value)
       userData.append('email',email.current.value)
-      userData.append('password',password.current_value)
+      userData.append('password', password.current.value);
 
       doFetch({
         method : "POST",

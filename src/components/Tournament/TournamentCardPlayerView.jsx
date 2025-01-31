@@ -1,4 +1,4 @@
-import {CalendarDays, Check,ReceiptText,Trophy, User, UserCheck } from "lucide-react"
+import {CalendarDays,Eye, Check,ReceiptText,Trophy, User, UserCheck } from "lucide-react"
 import ModalInfoTorneo from "./ModalInfoTorneo"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -19,6 +19,7 @@ import useFetch from "../../hooks/useFetch"
 import { useEffect, useState } from "react"
 import ModalConfirmSign from "./ModalConfirmSign"
 import { useToast } from "../../hooks/use-toast"
+import { Link } from "react-router-dom"
 
 function TournamentCardPlayerView({id_tournament,name,capacity,start_date,end_date,status,total_points,organizer_id,best_of,inscribed }) {
   const [confirm,setConfirm] = useState(false)
@@ -72,15 +73,14 @@ function TournamentCardPlayerView({id_tournament,name,capacity,start_date,end_da
         </div>
       </CardHeader>
       <CardContent className="grid gap-1">
-        <div className=" flex items-center space-x-1 rounded-md border p-4">
-          <User />
+        <div className="bg-zinc-200 flex text-black items-center space-x-1 rounded-md border p-4">
+          <User className="text-black" />
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium leading-none">
-              Participantes
+              Capacidad máxima de participantes
             </p>
             <p className="text-sm text-muted-foreground">
-               <span className="text-lime-600 font-bold">15</span>/
-               <span className="text-orange-700 font-bold">{capacity}</span> inscriptos
+               <span className="text-orange-500 font-bold">{capacity}</span>
             </p>
           </div>         
         </div>
@@ -98,45 +98,44 @@ function TournamentCardPlayerView({id_tournament,name,capacity,start_date,end_da
       </CardContent>
       <CardFooter className="flex justify-between">
         <Dialog>
-            <DialogTrigger asChild>
-                <Button>
-                <User /> Ver Participantes
-                </Button>
-            </DialogTrigger>
-        <ModalInfoTorneo nombreTorneo={name} cantidadParticipantes={15}/>
-        </Dialog>
-        {!inscribed ? 
-        <Dialog> 
-          {!disableButton ?
-            <DialogTrigger>            
-                <Button className="bg-lime-600 hover:bg-lime-500 hover:outline-none">
-                  <Check /> Inscribirse
-                </Button>
-              <ModalConfirmSign nombre_torneo={name} fecha_inicio={format(new Date(start_date),"dd/MM/yyyy")}  fecha_fin={format(new Date(end_date),"dd/MM/yyyy")}  setConfirm={setConfirm} />
-            </DialogTrigger>:            
-                <Button className="bg-gray-500" disabled>
-                  <UserCheck /> Inscrito
-                </Button> 
-            }
-        </Dialog> :
-        <Dialog> 
-            <DialogTrigger>            
-                <Button className="bg-gray-400 hover:bg-gray-500 hover:outline-none">
-                  <ReceiptText/> Detalles
-                </Button>              
-            </DialogTrigger>  
-        </Dialog>        
-        }
-        
-        {role == "organizer" &&
-        <Dialog> 
           <DialogTrigger asChild>
-            <Button className="bg-dark-600 hover:bg-dark-500 hover:outline-none">
-              <Check /> Editar
+            <Button>
+              <User /> Ver Participantes
             </Button>
           </DialogTrigger>
+          <ModalInfoTorneo nombreTorneo={name} capacidad={capacity} tournament_id={id_tournament} />
         </Dialog>
-        }
+        {status === "Activo" ? (
+          !inscribed ? (
+            <Dialog>
+              <DialogTrigger>
+                {!disableButton ? (
+                  <Button className="bg-lime-600 hover:bg-lime-500 hover:outline-none">
+                    <Check /> Inscribirse
+                  </Button>
+                ) : (
+                  <Button className="bg-gray-500" disabled>
+                    <UserCheck /> Inscrito
+                  </Button>
+                )}
+              </DialogTrigger>
+              {!disableButton && (
+                <ModalConfirmSign
+                  nombre_torneo={name}
+                  fecha_inicio={format(new Date(start_date), "dd/MM/yyyy")}
+                  fecha_fin={format(new Date(end_date), "dd/MM/yyyy")}
+                  setConfirm={setConfirm}
+                />
+              )}
+            </Dialog>
+          ) : null
+        ) : (status === "En curso" || status === "Finalizado") ? (
+              <Link to={`/tournament/bracket/${id_tournament}`}>
+                <Button onClick={()=>console.log(id_tournament)} className="bg-gray-400 hover:bg-gray-500 hover:outline-none">
+                  <Eye /> Ver llaves
+                </Button>
+              </Link>
+        ) : null}
       </CardFooter>
     </Card>
   )

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import useFetch from "../../hooks/useFetch"
 import { useEffect } from "react";
-import { Cpu, Trophy } from "lucide-react";
+import { Trophy } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -16,18 +16,25 @@ import { Link } from "react-router-dom";
 import profile_img from "../../assets/perfil_ex.jpg"
 
 const Profile = () =>{
-    const { id_player } = useParams();
-    console.log(id_player)
-    const [{data,isLoading,isError},doFetchHistory]= useFetch(`${import.meta.env.VITE_API_URL}/tournament/player_history/${id_player}`)
-    const [{data: dataPlayer,isLoading:isLoadingPlayer,isError:isErrorPlayer},doFetchPlayer]= useFetch(`${import.meta.env.VITE_API_URL}/users/players/by_id/${id_player}`)
-    useEffect(()=>{
-        doFetchHistory({
-            method: "GET"
-        })
-        doFetchPlayer({
+    const { id_user } = useParams();
+    const [{data: dataUser,isLoading:isLoadingUser,isError:isErrorUser},doFetchUserData]  = useFetch(`${import.meta.env.VITE_API_URL}/users/players/${id_user}`)
+    const [{data,isLoading,isError},doFetchHistory]= useFetch()
+    const [{data: dataPlayer,isLoading:isLoadingPlayer,isError:isErrorPlayer},doFetchPlayer]= useFetch()
+    useEffect(()=>{        
+        doFetchUserData({
             method: "GET"
         })
     },[])
+    useEffect(()=>{
+        if(dataUser){
+            doFetchPlayer({
+                method: "GET"
+            },`${import.meta.env.VITE_API_URL}/users/players/by_id/${dataUser.id}`)
+            doFetchHistory({
+                method: "GET"
+            },`${import.meta.env.VITE_API_URL}/tournament/player_history/${dataUser.id}`)
+        }
+    },[dataUser])
     return (
         <>
         <div className="relative h-[200px] w-100 bg-gradient-to-r from-gray-100 to-gray-900">

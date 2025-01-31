@@ -19,10 +19,15 @@ const TournamentBracket = () =>{
   const [dataMatch,setDatamatch] = useState(null)
   const [dataMatchesModify,setDataMatchesModify]  = useState(null)
   const { id_tournament } = useParams();
-  const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/brackets/${id_tournament}`) 
+  const role = localStorage.getItem("role")
+  const [{data,isLoading,isError},doFetch] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/brackets/${id_tournament}`)
+  const [{data:dataTournament,isLoading:isLoadingTournament,isError:isErrorTorunament},doFetchTournament] = useFetch(`${import.meta.env.VITE_API_URL}/tournament/${id_tournament}`) 
    useEffect(()=>{
     doFetch({
         method : "GET"
+    })
+    doFetchTournament({
+      method :"GET"
     })
    },[])
    useEffect(()=>{
@@ -35,45 +40,49 @@ const TournamentBracket = () =>{
       setOpen(true)
    }
    return (
+    <div className="flex flex-col justify-center items-center min-h-screen">
+      <div className="rounded-lg p-6 bg-zinc-100 w-full">
+        <h1 className="text-2xl font-bold mb-4">Información del Torneo</h1>
+        {dataTournament && (
+          <div className="flex flex-col gap-2 text-lg">
+            <div><span className="font-medium">Torneo:</span> {dataTournament.name}</div>
+            <div><span className="font-medium">Mejor de:</span> {dataTournament.best_of}</div>
+            <div><span className="font-medium">Fecha de inicio:</span>{new Date(dataTournament.start_date).toLocaleDateString("es-ES")}</div>
+            <div><span className="font-medium">Fecha de finalización:</span>{new Date(dataTournament.end_date).toLocaleDateString("es-ES")}</div>
+            <div><span className="font-medium">Puntos :</span> <span className="text-lime-500 font-bold">{dataTournament.total_points} puntos</span></div>
+          </div>
+        )}
+      </div>
+  
+  {isLoading && <h1>Cargando...</h1>}
+  
+  {dataMatchesModify && (
     <>
-    <div className="flex-col bg-zinc-100 w-100 flex p-2 mb-4">
-      <div className="text-2xl text-slate-400"><span className="text-black text-bold">Torneo: </span> Ejemplo</div>
-      <div className="text-md text-slate-400"><span className="text-black text-bold">Mejor de:</span> 5</div>
-      <div className="text-md text-slate-400"><span className="text-black text-bold">Fecha de inicio:</span> 10/02</div>
-      <div className="text-md text-slate-400"><span className="text-black text-bold">Fecha de finalizacion:</span> 11/10</div>
-    </div>
-    {isLoading &&
-     <h1>Cargando...</h1>
-    }
-    {dataMatchesModify &&
-      <>
-        <SingleEliminationBracket
-            theme={GlootTheme}
-            matches={dataMatchesModify}
-            matchComponent={Match}
-            svgWrapper={({ children, ...props }) => (
-            <SVGViewer
-                width={10000}
-                height={5000}
-                background="rgb(11, 13, 19)"
-                SVGBackground="rgb(11, 13, 19)"
-                {...props}
-            >
-                {children}
-            </SVGViewer>
-            )}
-            onMatchClick={(match) => openModalData(match)}
-            onPartyClick={(match) => console.log(match)}
-        />
-      <Dialog open={open} onOpenChange={setOpen}> 
-          <DialogTrigger asChild>            
-          </DialogTrigger>
-          <ModalSetPuntage dataMatch={dataMatch} tournament_id = {id_tournament} setDataTournament= {setDataMatchesModify} dataTournament={dataMatchesModify} />
+      <SingleEliminationBracket
+        theme={GlootTheme}
+        matches={dataMatchesModify}
+        matchComponent={Match}
+        svgWrapper={({ children, ...props }) => (
+          <SVGViewer
+            width={10000}
+            height={5000}
+            background="rgb(11, 13, 19)"
+            SVGBackground="rgb(11, 13, 19)"
+            {...props}
+          >
+            {children}
+          </SVGViewer>
+        )}
+        {...(role === "organizer" && { onMatchClick: (match) => openModalData(match) })}
+        {...(role === "organizer" && { onPartyClick: (match) => console.log(match) })}
+      />
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild></DialogTrigger>
+        <ModalSetPuntage dataMatch={dataMatch} best_of={dataTournament && dataTournament.best_of} tournament_id={id_tournament} setDataTournament={setDataMatchesModify} dataTournament={dataMatchesModify} />
       </Dialog>
-      </>
-        
-    }
     </>
+  )}
+</div>
    
 )
 } 
